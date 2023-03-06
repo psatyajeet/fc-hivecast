@@ -25,7 +25,7 @@ export default function Cast({ cast }: { cast: CastType }) {
           </Avatar.Fallback>
         </Avatar.Root>
       </div>
-      <div>
+      <div className="w-[100%]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
             <div className="text-sm font-bold mr-2">
