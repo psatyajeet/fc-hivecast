@@ -22,11 +22,11 @@ type Error = {
   error: string;
 };
 
-function formatCastsFromSupabase(casts: any[], otherCasts: any[]): Cast[] {
+function formatCastsFromSupabase(casts: any[]): Cast[] {
   const castHashes: Set<string> = new Set();
   const formattedCasts: Array<Cast> = [];
 
-  for (const cast of [...casts, ...otherCasts]) {
+  for (const cast of casts) {
     if (castHashes.has(cast.hash) || cast.deleted) {
       continue;
     }
@@ -56,13 +56,9 @@ async function getPostsByTag(tag: string): Promise<Data> {
   const tags = await supabase
     .from("cast_tags")
     .select(`tag, casts (*)`)
-    .ilike("tag", tag);
-
-  const otherCasts = await supabase
-    .from("casts")
-    .select(`*`)
-    .is("deleted", false)
-    .ilike("text", `%${tag}%`);
+    .ilike("tag", tag)
+    .order("published_at", { ascending: false })
+    .limit(100);
 
   if (tags.error) {
     throw tags.error;
@@ -74,10 +70,7 @@ async function getPostsByTag(tag: string): Promise<Data> {
     data.map((tag) => tag.tag)
   );
 
-  const casts = formatCastsFromSupabase(
-    data.map((tag) => tag.casts),
-    otherCasts.data || []
-  );
+  const casts = formatCastsFromSupabase(data.map((tag) => tag.casts));
 
   return { tag: mostCommonVersion, casts };
 }

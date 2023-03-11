@@ -14,7 +14,7 @@ const Main = styled("main", {
 export default function Home() {
   const [topTags, setTopTags] = useState<TagCount[]>([]);
   const [selectedTag, setSelectedTag] = useState("");
-  const [savedTags, setSavedTags] = useState<Set<string>>(new Set(["Arsenal"]));
+  const [savedTags, setSavedTags] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     async function fetchTags() {
