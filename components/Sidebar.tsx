@@ -1,3 +1,4 @@
+import Search from "@/components/Search";
 import { styled } from "@/stitches.config";
 import * as Separator from "@radix-ui/react-separator";
 
@@ -24,8 +25,7 @@ export default function Sidebar({
   return (
     <Container className="flex flex-col py-8">
       {/* <h1 className="text-3xl font-bold">Hivecaster</h1> */}
-      <h1 className="text-3xl font-bold place-self-center">CasterTag</h1>
-      <h1 className="text-3xl font-bold">Searchbar</h1>
+      <Search />
       <div className="">
         {Array.from(savedTags).map((tag) => {
           return (

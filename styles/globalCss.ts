@@ -11,8 +11,6 @@ export const globalStyles = globalCss({
   },
 
   "html, body": {
-    height: "100vh",
-    width: "100vw",
     scrollBehavior: "smooth",
   },
 
