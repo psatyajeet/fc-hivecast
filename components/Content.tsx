@@ -1,9 +1,6 @@
 import Cast from "@/components/Cast";
 import { TagCount } from "@/pages/api/tags";
-import { styled } from "@/stitches.config";
 import { useEffect, useState } from "react";
-
-const Container = styled("div", {});
 
 export interface CastType {
   hash: string;
@@ -55,20 +52,20 @@ export default function Content({
 
   if (!selectedTag) {
     return (
-      <Container>
+      <div className="grow max-w-prose py-8">
         <div>Select a tag you are interested in!</div>
-      </Container>
+      </div>
     );
   }
 
   return (
-    <Container className="w-5/6">
+    <div className="grow max-w-prose py-8">
       <div className="space-y-8">
         <div>{selectedTag}</div>
         {casts.map((cast) => (
           <Cast key={cast.hash} cast={cast} />
         ))}
       </div>
-    </Container>
+    </div>
   );
 }

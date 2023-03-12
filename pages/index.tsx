@@ -1,15 +1,8 @@
 import Content from "@/components/Content";
 import Sidebar from "@/components/Sidebar";
 import { TagCount } from "@/pages/api/tags";
-import { styled } from "@/stitches.config";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-
-const Main = styled("main", {
-  display: "flex",
-  flexDirection: "row",
-  height: "100%",
-});
 
 export default function Home() {
   const [topTags, setTopTags] = useState<TagCount[]>([]);
@@ -38,15 +31,17 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div className="flex flex-row">
-          <Sidebar
-            topTags={topTags}
-            savedTags={savedTags}
-            setSelectedTag={setSelectedTag}
-            setSavedTags={setSavedTags}
-          />
-          <Content selectedTag={selectedTag} topTags={topTags} />
+      <main className="bg-purple-200">
+        <div className="max-w-6xl mx-auto ">
+          <div className="flex flex-row justify-center">
+            <Sidebar
+              topTags={topTags}
+              savedTags={savedTags}
+              setSelectedTag={setSelectedTag}
+              setSavedTags={setSavedTags}
+            />
+            <Content selectedTag={selectedTag} topTags={topTags} />
+          </div>
         </div>
       </main>
     </>

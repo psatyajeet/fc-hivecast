@@ -6,6 +6,8 @@ const Container = styled("div", {
   // position: "fixed",
   // top: 0,
   // left: 0,
+  width: "200px",
+  height: "100%",
 });
 
 export default function Sidebar({
@@ -20,15 +22,15 @@ export default function Sidebar({
   setSavedTags: any;
 }) {
   return (
-    <Container className="bg-purple-200 w-200 flex flex-col">
+    <Container className="flex flex-col py-8">
       {/* <h1 className="text-3xl font-bold">Hivecaster</h1> */}
-      <h1 className="text-3xl font-bold">CasterTag</h1>
+      <h1 className="text-3xl font-bold place-self-center">CasterTag</h1>
       <h1 className="text-3xl font-bold">Searchbar</h1>
       <div className="">
         {Array.from(savedTags).map((tag) => {
           return (
             <div
-              className="rounded-md text-lg hover:bg-purple-400 mx-2 py-1 px-2"
+              className="rounded-md text-lg hover:bg-purple-400 py-1 px-2"
               onClick={() => setSelectedTag(tag)}
               key={tag}
             >
@@ -38,11 +40,11 @@ export default function Sidebar({
         })}
       </div>
       <Separator.Root className="bg-violet6 my-[15px]" />
-      <div className=" overscroll-contain">
+      <ul>
         {topTags.map((tag) => {
           return (
-            <div
-              className="rounded-md text-lg hover:bg-purple-400 mx-2 py-1 px-2"
+            <li
+              className="rounded-md text-lg hover:bg-purple-400 py-1 px-2"
               onClick={() => {
                 savedTags.add(tag.tag);
                 setSavedTags(savedTags);
@@ -51,10 +53,10 @@ export default function Sidebar({
               key={tag.tag}
             >
               # {tag.tag}
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </Container>
   );
 }
