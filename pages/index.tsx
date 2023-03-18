@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [topTags, setTopTags] = useState<TagCount[]>([]);
-  const [selectedTag, setSelectedTag] = useState("");
-  const [savedTags, setSavedTags] = useState<Set<string>>(new Set());
+  const [selectedTag, setSelectedTag] = useState("Farcaster");
+  const [savedTags, setSavedTags] = useState<Set<string>>(
+    new Set(["Farcaster", "Ethereum", "Purple"])
+  );
 
   useEffect(() => {
     async function fetchTags() {

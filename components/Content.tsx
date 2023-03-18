@@ -59,7 +59,7 @@ export default function Content({
   }
 
   return (
-    <div className="max-w-prose ml-[224px] overflow-y-auto">
+    <div className="max-w-[650px] ml-[224px] overflow-y-auto">
       <div className="text-xl font-bold"># {selectedTag}</div>
       <div className="mt-[12px] space-y-4">
         {casts.map((cast) => (

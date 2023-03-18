@@ -14,7 +14,7 @@ export default function Sidebar({
   setSavedTags: any;
 }) {
   return (
-    <div className="overflow-y-auto fixed h-screen flex flex-col w-[200px]  mr-[24px]">
+    <div className="overflow-y-auto fixed h-screen flex flex-col w-[200px] mr-[24px]">
       {/* <h1 className="text-3xl font-bold">Hivecaster</h1> */}
       <Search
         topTags={topTags}
@@ -28,7 +28,7 @@ export default function Sidebar({
         {Array.from(savedTags).map((tag) => {
           return (
             <li
-              className="rounded-md text-lg hover:bg-purple-400 py-1 px-2"
+              className="rounded-md text-lg hover:bg-purple-400 cursor-pointer py-1 px-2"
               onClick={() => setSelectedTag(tag)}
               key={tag}
             >
