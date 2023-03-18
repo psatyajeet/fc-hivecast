@@ -73,7 +73,7 @@ export default function Search({
                 }}
               />
             </fieldset>
-            <ul className="overflow-scroll max-h-[300px]">
+            <ul className="overflow-auto max-h-[300px] mx-[12px] mb-[15px]">
               {isSearching && <li>Searching...</li>}
               {results.map((result) => {
                 return (
