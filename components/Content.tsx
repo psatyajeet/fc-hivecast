@@ -50,16 +50,16 @@ export default function Content({
     });
   }, [selectedTag]);
 
-  if (!selectedTag) {
+  if (!selectedTag || casts.length <= 0) {
     return (
-      <div className="grow max-w-prose py-8">
+      <div className="max-w-prose ml-[224px]">
         <div>Select a tag you are interested in!</div>
       </div>
     );
   }
 
   return (
-    <div className="grow max-w-prose py-8">
+    <div className="max-w-prose ml-[224px] overflow-y-auto">
       <div className="text-xl font-bold"># {selectedTag}</div>
       <div className="mt-[12px] space-y-4">
         {casts.map((cast) => (

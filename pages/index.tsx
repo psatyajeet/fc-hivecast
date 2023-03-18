@@ -3,7 +3,6 @@ import Sidebar from "@/components/Sidebar";
 import { TagCount } from "@/pages/api/tags";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 
 export default function Home() {
   const [topTags, setTopTags] = useState<TagCount[]>([]);
@@ -33,8 +32,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-purple-200">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-row justify-center">
+        <div className="max-w-6xl mx-auto p-[24px] flex flex-row justify-center">
+          <div className="min-w-2xl min-h-screen relative inline-flex">
             <Sidebar
               topTags={topTags}
               savedTags={savedTags}

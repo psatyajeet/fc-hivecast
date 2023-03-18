@@ -14,7 +14,7 @@ export default function Sidebar({
   setSavedTags: any;
 }) {
   return (
-    <div className="flex flex-col w-[200px] py-8 mr-[24px]">
+    <div className="overflow-y-auto fixed h-screen flex flex-col w-[200px]  mr-[24px]">
       {/* <h1 className="text-3xl font-bold">Hivecaster</h1> */}
       <Search
         topTags={topTags}
