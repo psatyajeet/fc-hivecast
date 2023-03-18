@@ -1,17 +1,32 @@
 import Content from "@/components/Content";
 import Sidebar from "@/components/Sidebar";
+import { useStorage } from "@/hooks/useLocalStorage";
 import { TagCount } from "@/pages/api/tags";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const { getItem } = useStorage();
+
   const [topTags, setTopTags] = useState<TagCount[]>([]);
-  const [selectedTag, setSelectedTag] = useState("Farcaster");
-  const [savedTags, setSavedTags] = useState<Set<string>>(
-    new Set(["Farcaster", "Ethereum", "Purple"])
-  );
+  const [selectedTag, setSelectedTag] = useState("");
+  const [savedTags, setSavedTags] = useState<Set<string>>(new Set());
 
   useEffect(() => {
+    const selectedTag = getItem("selectedTag", "local");
+    if (selectedTag) {
+      setSelectedTag(selectedTag);
+    } else {
+      setSelectedTag("Farcaster");
+    }
+
+    const savedTags = getItem("savedTags", "local");
+    if (savedTags) {
+      setSavedTags(new Set(JSON.parse(savedTags)));
+    } else {
+      setSavedTags(new Set(["Farcaster", "Ethereum", "Purple"]));
+    }
+
     async function fetchTags() {
       const response = await fetch("/api/tags", {
         method: "GET",
