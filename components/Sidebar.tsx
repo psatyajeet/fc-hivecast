@@ -1,15 +1,6 @@
 import Search from "@/components/Search";
-import { styled } from "@/stitches.config";
+import { TagCount } from "@/pages/api/tags";
 import * as Separator from "@radix-ui/react-separator";
-
-const Container = styled("div", {
-  // height: "100%",
-  // position: "fixed",
-  // top: 0,
-  // left: 0,
-  width: "200px",
-  height: "100%",
-});
 
 export default function Sidebar({
   topTags,
@@ -17,30 +8,37 @@ export default function Sidebar({
   setSelectedTag,
   setSavedTags,
 }: {
-  topTags: Array<{ tag: string; count: number }>;
+  topTags: Array<TagCount>;
   savedTags: Set<string>;
   setSelectedTag: any;
   setSavedTags: any;
 }) {
   return (
-    <Container className="flex flex-col py-8">
+    <div className="flex flex-col w-[200px] py-8 mr-[24px]">
       {/* <h1 className="text-3xl font-bold">Hivecaster</h1> */}
-      <Search />
-      <div className="">
+      <Search
+        topTags={topTags}
+        onClick={(tag: string) => {
+          savedTags.add(tag);
+          setSavedTags(savedTags);
+          setSelectedTag(tag);
+        }}
+      />
+      <ul className="mt-[24px]">
         {Array.from(savedTags).map((tag) => {
           return (
-            <div
+            <li
               className="rounded-md text-lg hover:bg-purple-400 py-1 px-2"
               onClick={() => setSelectedTag(tag)}
               key={tag}
             >
               # {tag}
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
       <Separator.Root className="bg-violet6 my-[15px]" />
-      <ul>
+      {/* <ul>
         {topTags.map((tag) => {
           return (
             <li
@@ -56,7 +54,7 @@ export default function Sidebar({
             </li>
           );
         })}
-      </ul>
-    </Container>
+      </ul> */}
+    </div>
   );
 }

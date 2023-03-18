@@ -60,8 +60,8 @@ export default function Content({
 
   return (
     <div className="grow max-w-prose py-8">
-      <div className="space-y-8">
-        <div>{selectedTag}</div>
+      <div className="text-xl font-bold"># {selectedTag}</div>
+      <div className="mt-[12px] space-y-4">
         {casts.map((cast) => (
           <Cast key={cast.hash} cast={cast} />
         ))}

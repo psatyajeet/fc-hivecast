@@ -8,7 +8,10 @@ const formatDate = (date: string): string => {
 
 export default function Cast({ cast }: { cast: CastType }) {
   return (
-    <div className="container flex flex-row mx-auto px-4">
+    <a
+      href={`farcaster://casts/${cast.hash}`}
+      className="container flex flex-row rounded-md mx-auto py-6 px-4 bg-purple-100"
+    >
       <div className="mr-4">
         <Avatar.Root className="bg-blackA3 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
           {cast.author_pfp_url && (
@@ -41,6 +44,6 @@ export default function Cast({ cast }: { cast: CastType }) {
         </div>
         <div>{cast.text}</div>
       </div>
-    </div>
+    </a>
   );
 }

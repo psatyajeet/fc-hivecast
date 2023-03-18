@@ -25,12 +25,9 @@ function getTopNTags(
   n: number
 ): Array<{ tag: string; count: number }> {
   // Get the top n tags
-  const topTags = Object.entries(tags)
-    .sort((a, b) => {
-      return b[1].length - a[1].length;
-    })
-
-    .slice(0, n);
+  const topTags = Object.entries(tags).sort((a, b) => {
+    return b[1].length - a[1].length;
+  });
 
   const formattedTags = topTags.map((tag) => {
     const mostCommonVersion = getMostCommonVersionOfTag(tag[1]);
