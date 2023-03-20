@@ -52,14 +52,14 @@ export default function Content({
 
   if (!selectedTag || casts.length <= 0) {
     return (
-      <div className="max-w-prose ml-[224px]">
+      <div className="max-w-[650px] lg:w-[650px] ml-[224px]">
         <div>Select a tag you are interested in!</div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-[650px] ml-[224px] overflow-y-auto">
+    <div className="max-w-[650px] lg:w-[650px] ml-[224px] overflow-y-auto">
       <div className="text-xl font-bold"># {selectedTag}</div>
       <div className="mt-[12px] space-y-4">
         {casts.map((cast) => (
