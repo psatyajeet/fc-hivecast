@@ -41,17 +41,33 @@ function getTopTags(
   return formattedTags;
 }
 
-async function getTags(): Promise<Array<{ tag: string; count: number }>> {
-  const data = await supabase
-    .from("unique_cast_tags")
-    .select()
-    .gt("tag_count", 1);
+const PAGE_LIMIT = 1000;
 
-  if (data.error) {
-    throw data.error;
+async function getTags(): Promise<Array<{ tag: string; count: number }>> {
+  const dataCount = await supabase
+    .from("unique_cast_tags")
+    .select("*", { count: "exact", head: true });
+
+  if (dataCount.error || !dataCount.count) {
+    throw dataCount.error;
   }
 
-  const tags = data.data as DbTagCount[];
+  const count = dataCount.count;
+
+  let tags = [] as DbTagCount[];
+
+  for (let i = 0; i < count; i += PAGE_LIMIT) {
+    const data = await supabase
+      .from("unique_cast_tags")
+      .select()
+      .range(i, i + PAGE_LIMIT);
+
+    if (data.error || !data.data) {
+      throw data.error;
+    }
+
+    tags = tags.concat(data.data as DbTagCount[]);
+  }
 
   // Convert DbTagCount into TagCount and dedupe different capitalizations of the same tag
   const tagToEntries: Record<string, Array<DbTagCount>> = tags.reduce(
@@ -68,7 +84,6 @@ async function getTags(): Promise<Array<{ tag: string; count: number }>> {
   );
 
   const topTags = getTopTags(tagToEntries);
-
   return topTags;
 }
 
