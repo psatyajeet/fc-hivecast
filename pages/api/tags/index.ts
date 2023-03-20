@@ -9,55 +9,65 @@ type Data = {
   tags: Array<TagCount>;
 };
 
-export function getMostCommonVersionOfTag(tagVersions: string[]) {
-  const versionCounts = Object.entries(_.countBy(tagVersions));
-  const mostCommonVersion = _.maxBy(versionCounts, (o) => o[1]);
-
-  if (!mostCommonVersion) {
-    return tagVersions[0];
-  }
-
-  return mostCommonVersion[0];
+// This isn't deduped for different capitalizations of the same tag
+interface DbTagCount {
+  tag: string;
+  tag_count: number;
 }
 
-function getTopNTags(
-  tags: Record<string, string[]>,
-  n: number
+export function getMostCommonVersionOfTag(tagVersions: DbTagCount[]): string {
+  const mostCommonVersion = _.maxBy(tagVersions, (o) => o.tag_count);
+
+  if (!mostCommonVersion) {
+    return tagVersions[0].tag;
+  }
+
+  return mostCommonVersion.tag;
+}
+
+function getTopTags(
+  tags: Record<string, DbTagCount[]>
 ): Array<{ tag: string; count: number }> {
   // Get the top n tags
-  const topTags = Object.entries(tags).sort((a, b) => {
-    return b[1].length - a[1].length;
-  });
+  const topTags = Object.entries(tags);
 
   const formattedTags = topTags.map((tag) => {
     const mostCommonVersion = getMostCommonVersionOfTag(tag[1]);
 
     // Format the tag using the most commonly used capitalization of the tag and the count
-    return { tag: mostCommonVersion, count: tag[1].length };
+    return { tag: mostCommonVersion, count: _.sumBy(tag[1], "tag_count") };
   });
 
   return formattedTags;
 }
 
-async function getTags() {
-  const tags = await supabase.from("cast_tags").select();
-  if (tags.error) {
-    throw tags.error;
+async function getTags(): Promise<Array<{ tag: string; count: number }>> {
+  const data = await supabase
+    .from("unique_cast_tags")
+    .select()
+    .gt("tag_count", 1);
+
+  if (data.error) {
+    throw data.error;
   }
 
-  // Aggregate an array of the occurrences of each tag
-  const tagToEntries = tags.data.reduce((accumulator, tag) => {
-    const tagContent: string = tag.tag;
-    const lowercaseTag = tagContent.toLowerCase();
-    if (accumulator[lowercaseTag]) {
-      accumulator[lowercaseTag].push(tagContent);
-    } else {
-      accumulator[lowercaseTag] = [tagContent];
-    }
-    return accumulator;
-  }, {});
+  const tags = data.data as DbTagCount[];
 
-  const topTags = getTopNTags(tagToEntries, 100);
+  // Convert DbTagCount into TagCount and dedupe different capitalizations of the same tag
+  const tagToEntries: Record<string, Array<DbTagCount>> = tags.reduce(
+    (accumulator, tag) => {
+      const lowercaseTag = tag.tag.toLowerCase();
+      if (accumulator[lowercaseTag]) {
+        accumulator[lowercaseTag].push(tag);
+      } else {
+        accumulator[lowercaseTag] = [tag];
+      }
+      return accumulator;
+    },
+    {} as Record<string, DbTagCount[]>
+  );
+
+  const topTags = getTopTags(tagToEntries);
 
   return topTags;
 }

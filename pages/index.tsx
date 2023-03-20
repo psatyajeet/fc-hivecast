@@ -24,7 +24,7 @@ export default function Home() {
     if (savedTags) {
       setSavedTags(new Set(JSON.parse(savedTags)));
     } else {
-      setSavedTags(new Set(["Farcaster", "Ethereum", "Purple"]));
+      setSavedTags(new Set(["Farcaster", "Ethereum", "Purple", "gm"]));
     }
 
     async function fetchTags() {

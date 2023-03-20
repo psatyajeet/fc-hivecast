@@ -14,7 +14,7 @@ export default function Sidebar({
   setSelectedTag: any;
   setSavedTags: any;
 }) {
-  const { getItem, setItem } = useStorage();
+  const { setItem } = useStorage();
 
   return (
     <div className="overflow-y-auto fixed h-screen flex flex-col w-[200px] mr-[24px]">
