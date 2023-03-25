@@ -2,7 +2,7 @@
 
 /* For Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
-  width: 12px; /* Adjust the width of the scrollbar */
+  width: 4px; /* Adjust the width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {
