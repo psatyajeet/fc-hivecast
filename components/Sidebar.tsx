@@ -1,7 +1,6 @@
 import Search from "@/components/Search";
 import { useStorage } from "@/hooks/useLocalStorage";
 import { TagCount } from "@/pages/api/tags";
-import * as Separator from "@radix-ui/react-separator";
 
 export default function Sidebar({
   topTags,
@@ -17,8 +16,8 @@ export default function Sidebar({
   const { setItem } = useStorage();
 
   return (
-    <div className="overflow-y-auto fixed h-screen flex flex-col w-[200px] mr-[24px]">
-      {/* <h1 className="text-3xl font-bold">Hivecaster</h1> */}
+    <div className="flex flex-col lg:fixed lg:overflow-y-auto lg:h-screen lg:w-[200px]">
+      {/* <h1 className="text-3xl font-bold">CasterTag</h1> */}
       <Search
         topTags={topTags}
         onClick={(tag: string) => {
@@ -30,11 +29,11 @@ export default function Sidebar({
           setItem("selectedTag", tag, "local");
         }}
       />
-      <ul className="mt-[24px]">
+      <ul className="flex flex-row flex-wrap justify-center my-[24px] sm:flex-wrap lg:flex-col">
         {Array.from(savedTags).map((tag) => {
           return (
             <li
-              className="rounded-md text-lg hover:bg-purple-400 cursor-pointer py-1 px-2"
+              className="rounded-md text-lg text-center w-[200px] cursor-pointer py-1 px-2 hover:bg-purple-400 lg:text-left"
               onClick={() => {
                 setItem("selectedTag", tag, "local");
                 setSelectedTag(tag);
@@ -46,7 +45,6 @@ export default function Sidebar({
           );
         })}
       </ul>
-      <Separator.Root className="bg-violet6 my-[15px]" />
       {/* <ul>
         {topTags.map((tag) => {
           return (

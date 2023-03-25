@@ -43,14 +43,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>HiveCast</title>
+        <title>CasterTag</title>
         <meta name="description" content="Find casts on different topics" />
         {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-purple-200">
-        <div className="max-w-6xl mx-auto p-[24px] flex flex-row justify-center">
-          <div className="min-w-2xl min-h-screen relative inline-flex">
+        <div className="flex flex-column justify-center p-[24px] lg:flex-row lg:max-w-6xl lg:mx-auto">
+          <div className="min-h-screen lg:min-w-2xl lg:relative lg:inline-flex">
             <Sidebar
               topTags={topTags}
               savedTags={savedTags}

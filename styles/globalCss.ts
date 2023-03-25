@@ -42,6 +42,12 @@ export const globalStyles = globalCss({
   a: {
     fontFamily: "$paragraph",
     textDecoration: "none",
+    overflowWrap: "anywhere",
+    wordWrap: "anywhere",
+
+    "&:hover": {
+      cursor: "pointer",
+    },
   },
 
   "#root, #__next": {
