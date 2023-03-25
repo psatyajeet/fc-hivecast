@@ -5,9 +5,11 @@ import { useDebounce } from "use-debounce";
 
 export default function Search({
   topTags,
+  savedTags,
   onClick,
 }: {
   topTags: Array<TagCount>;
+  savedTags: Set<string>;
   onClick: any;
 }) {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -50,12 +52,6 @@ export default function Search({
         <Dialog.Portal>
           <Dialog.Overlay className="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0" />
           <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white pt-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-            {/* <Dialog.Title className="text-mauve12 m-0 text-[17px] font-medium">
-              Edit profile
-            </Dialog.Title>
-            <Dialog.Description className="text-mauve11 mt-[10px] mb-5 text-[15px] leading-normal">
-              Make changes to your profile here. Click save when you are done.
-            </Dialog.Description> */}
             <fieldset className="mb-[15px] mx-[12px] flex items-center gap-5">
               <label
                 className="text-violet11 w-[50px] text-right text-[15px]"
@@ -74,7 +70,6 @@ export default function Search({
               />
             </fieldset>
             <ul className="overflow-auto max-h-[300px] mx-[12px] mb-[15px]">
-              {isSearching && <li>Searching...</li>}
               {results.map((result) => {
                 return (
                   <div key={result.tag}>
@@ -87,6 +82,20 @@ export default function Search({
                   </div>
                 );
               })}
+              {results.length <= 0 &&
+                topTags.map((tag) => {
+                  if (savedTags.has(tag.tag)) return null;
+                  return (
+                    <div key={tag.tag}>
+                      <li
+                        className="rounded-md hover:bg-purple-400 p-[12px]"
+                        onClick={() => onClick(tag.tag)}
+                      >
+                        # {tag.tag}
+                      </li>
+                    </div>
+                  );
+                })}
             </ul>
           </Dialog.Content>
         </Dialog.Portal>

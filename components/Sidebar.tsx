@@ -20,6 +20,7 @@ export default function Sidebar({
       {/* <h1 className="text-3xl font-bold">CasterTag</h1> */}
       <Search
         topTags={topTags}
+        savedTags={savedTags}
         onClick={(tag: string) => {
           savedTags.add(tag);
           setSavedTags(savedTags);
