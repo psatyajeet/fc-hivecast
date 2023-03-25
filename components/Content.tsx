@@ -53,13 +53,13 @@ export default function Content({
   if (!selectedTag || casts.length <= 0) {
     return (
       <div className="max-w-[650px] lg:w-[650px] lg:ml-[224px]">
-        <div>Select a tag you are interested in!</div>
+        {/* <div>Select a tag you are interested in!</div> */}
       </div>
     );
   }
 
   return (
-    <div className="w-[100%]  mx-auto lg:w-[650px] lg:ml-[224px] lg:overflow-y-auto">
+    <div className="w-[100%] mx-auto lg:w-[650px] lg:ml-[224px] lg:overflow-y-auto">
       <div className="text-xl font-bold"># {selectedTag}</div>
       <div className="min-w-[300px] mt-[12px] space-y-4 sm:min-w-[100%]">
         {casts.map((cast) => (

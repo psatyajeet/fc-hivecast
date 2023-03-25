@@ -17,7 +17,6 @@ export default function Sidebar({
 
   return (
     <div className="flex flex-col lg:fixed lg:overflow-y-auto lg:h-screen lg:w-[200px]">
-      {/* <h1 className="text-3xl font-bold">CasterTag</h1> */}
       <Search
         topTags={topTags}
         savedTags={savedTags}
@@ -30,11 +29,11 @@ export default function Sidebar({
         }}
       />
       <div className="">
-        <ul className="flex flex-row flex-wrap overflow-x-auto my-[24px] sm:flex-wrap lg:flex-col">
+        <ul className="flex flex-row flex-wrap justify-center overflow-x-auto my-[24px] sm:flex-wrap lg:flex-col">
           {Array.from(savedTags).map((tag) => {
             return (
               <li
-                className="rounded-md text-lg text-center cursor-pointer py-1 px-2 m-[1px] hover:bg-purple-400 lg:text-left"
+                className="rounded-md text-lg text-center cursor-pointer py-1 px-4 m-[1px] hover:bg-purple-400 lg:text-left"
                 onClick={() => {
                   setItem("selectedTag", tag, "local");
                   setSelectedTag(tag);

@@ -43,7 +43,7 @@ function getTopTags(
 
 const PAGE_LIMIT = 1000;
 
-async function getTags(): Promise<Array<{ tag: string; count: number }>> {
+async function getUniqueCastTags(): Promise<DbTagCount[]> {
   const dataCount = await supabase
     .from("unique_cast_tags")
     .select("*", { count: "exact", head: true });
@@ -68,6 +68,12 @@ async function getTags(): Promise<Array<{ tag: string; count: number }>> {
 
     tags = tags.concat(data.data as DbTagCount[]);
   }
+
+  return tags;
+}
+
+async function getTags(): Promise<Array<{ tag: string; count: number }>> {
+  const tags = await getUniqueCastTags();
 
   // Convert DbTagCount into TagCount and dedupe different capitalizations of the same tag
   const tagToEntries: Record<string, Array<DbTagCount>> = tags.reduce(

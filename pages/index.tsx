@@ -17,14 +17,14 @@ export default function Home() {
     if (selectedTag) {
       setSelectedTag(selectedTag);
     } else {
-      setSelectedTag("Farcaster");
+      setSelectedTag("Ethereum");
     }
 
     const savedTags = getItem("savedTags", "local");
     if (savedTags) {
       setSavedTags(new Set(JSON.parse(savedTags)));
     } else {
-      setSavedTags(new Set(["Farcaster", "Ethereum", "gm"]));
+      setSavedTags(new Set(["Ethereum", "Farcaster", "gm"]));
     }
 
     async function fetchTags() {
@@ -49,8 +49,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-purple-200">
-        <div className="flex flex-column justify-center p-[24px] lg:flex-row lg:max-w-6xl lg:mx-auto">
-          <div className="min-h-screen lg:min-w-2xl lg:relative lg:inline-flex">
+        <div className="flex flex-column justify-center p-[24px] lg:flex-row lg:max-w-6xl lg:mx-auto lg:py-[64px]">
+          <div className="w-[100%]  min-h-screen lg:min-w-2xl lg:relative lg:inline-flex">
             <Sidebar
               topTags={topTags}
               savedTags={savedTags}
