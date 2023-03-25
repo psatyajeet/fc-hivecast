@@ -15,6 +15,7 @@ export default function Search({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<TagCount[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
 
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
 
@@ -43,7 +44,7 @@ export default function Search({
 
   return (
     <>
-      <Dialog.Root>
+      <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Trigger asChild>
           <button className="text-violet11 shadow-blackA7 hover:bg-mauve3 inline-flex w-[200px] h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] m-[auto] lg:m-0">
             Search for Tags
@@ -69,7 +70,10 @@ export default function Search({
                   <div key={result.tag}>
                     <li
                       className="rounded-md hover:bg-purple-400 p-[12px]"
-                      onClick={() => onClick(result.tag)}
+                      onClick={() => {
+                        onClick(result.tag);
+                        setOpen(false);
+                      }}
                     >
                       # {result.tag}
                     </li>
@@ -83,7 +87,10 @@ export default function Search({
                     <div key={tag.tag}>
                       <li
                         className="rounded-md hover:bg-purple-400 p-[12px]"
-                        onClick={() => onClick(tag.tag)}
+                        onClick={() => {
+                          onClick(tag.tag);
+                          setOpen(false);
+                        }}
                       >
                         # {tag.tag}
                       </li>
