@@ -1,14 +1,14 @@
 import Content from "@/components/Content";
 import Sidebar from "@/components/Sidebar";
 import { useStorage } from "@/hooks/useLocalStorage";
-import { TagCount } from "@/pages/api/tags";
+import { getTags, TagCount } from "@/pages/api/tags";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-function Home() {
+function Home({ topTags }: { topTags: Array<TagCount> }) {
   const { getItem } = useStorage();
 
-  const [topTags, setTopTags] = useState<TagCount[]>([]);
+  // const [topTags, setTopTags] = useState<TagCount[]>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [savedTags, setSavedTags] = useState<Set<string>>(new Set());
 
@@ -35,9 +35,9 @@ function Home() {
       return response.json();
     }
 
-    fetchTags().then((body) => {
-      setTopTags(body.tags);
-    });
+    // fetchTags().then((body) => {
+    // setTopTags(body.tags);
+    // });
   }, []);
 
   return (
@@ -65,22 +65,21 @@ function Home() {
   );
 }
 
-// // This function gets called at build time on server-side.
-// // It may be called again, on a serverless function, if
-// // revalidation is enabled and a new request comes in
-// export async function getStaticProps() {
-//   // const tags = await getTags();
-//   const tags = [{ tag: "Ethereum", count: 1 }];
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export async function getStaticProps() {
+  const tags = await getTags();
 
-//   return {
-//     props: {
-//       topTags: tags,
-//     },
-//     // Next.js will attempt to re-generate the page:
-//     // - When a request comes in
-//     // - At most once every 10 seconds
-//     revalidate: 10, // In seconds
-//   };
-// }
+  return {
+    props: {
+      topTags: tags,
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 60 seconds
+    revalidate: 60, // In seconds
+  };
+}
 
 export default Home;
