@@ -37,9 +37,7 @@ export default function Content({ selectedTag }: { selectedTag: string }) {
 
   if (!selectedTag || casts.length <= 0) {
     return (
-      <div className="max-w-[650px] lg:w-[650px] lg:ml-[224px]">
-        {/* <div>Select a tag you are interested in!</div> */}
-      </div>
+      <div className="max-w-[650px] lg:w-[650px] lg:ml-[224px]">Loading...</div>
     );
   }
 
