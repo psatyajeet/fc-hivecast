@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export type TagCount = { tag: string; count: number };
 
 type Data = {
-  tags: Array<TagCount>;
+  tags: TagCount[];
 };
 
 // This isn't deduped for different capitalizations of the same tag
@@ -25,18 +25,18 @@ export function getMostCommonVersionOfTag(tagVersions: DbTagCount[]): string {
   return mostCommonVersion.tag;
 }
 
-function getTopTags(
-  tags: Record<string, DbTagCount[]>
-): Array<{ tag: string; count: number }> {
-  // Get the top n tags
+function getTopTags(tags: Record<string, DbTagCount[]>): TagCount[] {
   const topTags = Object.entries(tags);
 
-  const formattedTags = topTags.map((tag) => {
-    const mostCommonVersion = getMostCommonVersionOfTag(tag[1]);
+  const formattedTags = topTags
+    .map((tag) => {
+      const count = _.sumBy(tag[1], "tag_count");
+      const mostCommonVersion = getMostCommonVersionOfTag(tag[1]);
 
-    // Format the tag using the most commonly used capitalization of the tag and the count
-    return { tag: mostCommonVersion, count: _.sumBy(tag[1], "tag_count") };
-  });
+      // Format the tag using the most commonly used capitalization of the tag and the count
+      return { tag: mostCommonVersion, count };
+    })
+    .filter((tag) => tag.count > 1); // filter out tags with less than one cast
 
   return formattedTags;
 }
@@ -72,7 +72,7 @@ async function getUniqueCastTags(): Promise<DbTagCount[]> {
   return tags;
 }
 
-async function getTags(): Promise<Array<{ tag: string; count: number }>> {
+export async function getTags(): Promise<TagCount[]> {
   const tags = await getUniqueCastTags();
 
   // Convert DbTagCount into TagCount and dedupe different capitalizations of the same tag

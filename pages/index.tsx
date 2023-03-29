@@ -5,7 +5,7 @@ import { TagCount } from "@/pages/api/tags";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-export default function Home() {
+function Home() {
   const { getItem } = useStorage();
 
   const [topTags, setTopTags] = useState<TagCount[]>([]);
@@ -57,10 +57,30 @@ export default function Home() {
               setSelectedTag={setSelectedTag}
               setSavedTags={setSavedTags}
             />
-            <Content selectedTag={selectedTag} topTags={topTags} />
+            <Content selectedTag={selectedTag} />
           </div>
         </div>
       </main>
     </>
   );
 }
+
+// // This function gets called at build time on server-side.
+// // It may be called again, on a serverless function, if
+// // revalidation is enabled and a new request comes in
+// export async function getStaticProps() {
+//   // const tags = await getTags();
+//   const tags = [{ tag: "Ethereum", count: 1 }];
+
+//   return {
+//     props: {
+//       topTags: tags,
+//     },
+//     // Next.js will attempt to re-generate the page:
+//     // - When a request comes in
+//     // - At most once every 10 seconds
+//     revalidate: 10, // In seconds
+//   };
+// }
+
+export default Home;

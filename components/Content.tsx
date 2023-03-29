@@ -1,6 +1,5 @@
 import Cast from "@/components/Cast";
-import { TagCount } from "@/pages/api/tags";
-import { useEffect, useState } from "react";
+import useSWR from "swr";
 
 export interface CastType {
   hash: string;
@@ -22,33 +21,19 @@ export interface CastType {
   deleted: boolean;
 }
 
-export default function Content({
-  selectedTag,
-  topTags,
-}: {
-  selectedTag: string;
-  topTags: TagCount[];
-}) {
-  const [casts, setCasts] = useState<CastType[]>([]);
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-  useEffect(() => {
-    async function fetchCasts(tag: string): Promise<{ casts: CastType[] }> {
-      const response = await fetch(`/api/tags/${tag}`, {
-        method: "GET",
-      });
+export default function Content({ selectedTag }: { selectedTag: string }) {
+  const { data, error, isLoading } = useSWR(
+    `/api/tags/${selectedTag}`,
+    fetcher,
+    { refreshInterval: 1000 }
+  );
 
-      return response.json();
-    }
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
 
-    if (!selectedTag) {
-      return;
-    }
-
-    fetchCasts(selectedTag).then((body) => {
-      const casts: CastType[] = body.casts;
-      setCasts(casts);
-    });
-  }, [selectedTag]);
+  const casts: CastType[] = data.casts;
 
   if (!selectedTag || casts.length <= 0) {
     return (
