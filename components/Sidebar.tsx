@@ -28,6 +28,17 @@ export default function Sidebar({
           setItem("selectedTag", tag, "local");
         }}
       />
+      <div className="text-sm text-center mt-[12px] lg:px-[16px]">
+        Have feedback?{" "}
+        <a
+          href="https://forms.gle/v2ZAUBSY9a59tbCK7"
+          target="_blank"
+          rel="noopener"
+        >
+          {" "}
+          Click here!{" "}
+        </a>
+      </div>
       <div className="">
         <ul className="flex flex-row flex-wrap justify-center overflow-x-auto my-[24px] sm:flex-wrap lg:flex-col">
           {Array.from(savedTags).map((tag) => {
