@@ -16,7 +16,7 @@ export default function Sidebar({
   const { setItem } = useStorage();
 
   return (
-    <div className="flex flex-col lg:fixed lg:overflow-y-auto lg:h-screen lg:w-[200px]">
+    <div className="flex flex-col lg:fixed lg:h-screen lg:w-[200px] lg:pb-[48px]">
       <Search
         topTags={topTags}
         savedTags={savedTags}
@@ -39,8 +39,8 @@ export default function Sidebar({
           Click here!{" "}
         </a>
       </div>
-      <div className="">
-        <ul className="flex flex-row flex-wrap justify-center overflow-x-auto overflow-y-auto my-[24px] sm:flex-wrap lg:flex-col">
+      <div className="overflow-x-auto overflow-y-auto my-[24px]">
+        <ul className="flex flex-row flex-wrap justify-center sm:flex-wrap lg:flex-col">
           {Array.from(savedTags).map((tag) => {
             return (
               <li
