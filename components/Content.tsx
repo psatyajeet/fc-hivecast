@@ -55,7 +55,9 @@ export default function Content({ selectedTag }: { selectedTag: string }) {
 
   return (
     <div className="w-[100%] mx-auto lg:w-[650px] lg:ml-[224px] lg:overflow-y-auto">
-      <div className="text-xl font-bold"># {selectedTag}</div>
+      <div className="flex flex-row justify-between items-center">
+        <div className="text-xl font-bold"># {selectedTag}</div>
+      </div>
       <div className="min-w-[300px] mt-[12px] space-y-4 sm:min-w-[100%]">
         {casts.map((cast) => (
           <Cast key={cast.hash} cast={cast} />

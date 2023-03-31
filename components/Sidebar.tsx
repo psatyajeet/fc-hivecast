@@ -28,18 +28,7 @@ export default function Sidebar({
           setItem("selectedTag", tag, "local");
         }}
       />
-      <div className="text-sm text-center mt-[12px] lg:px-[16px]">
-        Have feedback?{" "}
-        <a
-          href="https://forms.gle/v2ZAUBSY9a59tbCK7"
-          target="_blank"
-          rel="noopener"
-        >
-          {" "}
-          Click here!{" "}
-        </a>
-      </div>
-      <div className="overflow-x-auto overflow-y-auto my-[24px]">
+      <div className="overflow-x-auto overflow-y-auto mt-[24px] mb-[12px] lg:mb-[12px]">
         <ul className="flex flex-row flex-wrap justify-center sm:flex-wrap lg:flex-col">
           {Array.from(savedTags).map((tag) => {
             return (
@@ -56,6 +45,20 @@ export default function Sidebar({
             );
           })}
         </ul>
+      </div>
+      <div className="text-sm text-center mb-[12px] lg:px-[16px]">
+        <div>Built with 🟪 by @pal</div>
+        <div>Have feedback? </div>
+        <div>
+          <a
+            href="https://forms.gle/v2ZAUBSY9a59tbCK7"
+            target="_blank"
+            rel="noopener"
+          >
+            {" "}
+            Click here!{" "}
+          </a>
+        </div>
       </div>
     </div>
   );
