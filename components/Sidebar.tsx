@@ -46,7 +46,7 @@ export default function Sidebar({
           })}
         </ul>
       </div>
-      <div className="text-sm text-center mb-[12px] lg:px-[16px]">
+      <div className="text-sm text-center mb-[12px] lg:px-[16px] lg:fixed lg:bottom-[0px] lg:mb-[24px]">
         <div>Built with 🟪 by @pal</div>
         <div>Have feedback? </div>
         <div>
