@@ -26,18 +26,6 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
     } else {
       setSavedTags(new Set(["Ethereum", "Farcaster", "purple", "gm"]));
     }
-
-    async function fetchTags() {
-      const response = await fetch("/api/tags", {
-        method: "GET",
-      });
-
-      return response.json();
-    }
-
-    // fetchTags().then((body) => {
-    // setTopTags(body.tags);
-    // });
   }, []);
 
   return (
@@ -49,8 +37,8 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-purple-200">
-        <div className="flex flex-column justify-center p-[24px] lg:flex-row lg:max-w-6xl lg:mx-auto lg:py-[64px]">
-          <div className="w-[100%]  min-h-screen lg:min-w-2xl lg:relative lg:inline-flex">
+        <div className="flex flex-column justify-center p-[24px] lg:flex-row lg:max-w-6xl lg:mx-auto lg:pt-[48px] lg:pb-[64px]">
+          <div className="w-[100%] min-h-screen lg:min-w-2xl lg:relative lg:inline-flex">
             <Sidebar
               topTags={topTags}
               savedTags={savedTags}

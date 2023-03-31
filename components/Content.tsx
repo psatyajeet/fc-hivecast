@@ -30,14 +30,26 @@ export default function Content({ selectedTag }: { selectedTag: string }) {
     { refreshInterval: 1000 }
   );
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+  if (error)
+    return (
+      <div className="w-[100%] mx-auto lg:w-[650px] lg:ml-[224px]">
+        failed to load
+      </div>
+    );
+  if (isLoading)
+    return (
+      <div className="w-[100%] mx-auto lg:w-[650px] lg:ml-[224px]">
+        Loading...
+      </div>
+    );
 
   const casts: CastType[] = data.casts;
 
   if (!selectedTag || casts.length <= 0) {
     return (
-      <div className="max-w-[650px] lg:w-[650px] lg:ml-[224px]">Loading...</div>
+      <div className="w-[100%] mx-auto lg:w-[650px] lg:ml-[224px]">
+        Loading...
+      </div>
     );
   }
 

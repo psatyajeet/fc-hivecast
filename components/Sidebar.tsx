@@ -40,7 +40,7 @@ export default function Sidebar({
         </a>
       </div>
       <div className="">
-        <ul className="flex flex-row flex-wrap justify-center overflow-x-auto my-[24px] sm:flex-wrap lg:flex-col">
+        <ul className="flex flex-row flex-wrap justify-center overflow-x-auto overflow-y-auto my-[24px] sm:flex-wrap lg:flex-col">
           {Array.from(savedTags).map((tag) => {
             return (
               <li
@@ -57,23 +57,6 @@ export default function Sidebar({
           })}
         </ul>
       </div>
-      {/* <ul>
-        {topTags.map((tag) => {
-          return (
-            <li
-              className="rounded-md text-lg hover:bg-purple-400 py-1 px-2"
-              onClick={() => {
-                savedTags.add(tag.tag);
-                setSavedTags(savedTags);
-                setSelectedTag(tag.tag);
-              }}
-              key={tag.tag}
-            >
-              # {tag.tag}
-            </li>
-          );
-        })}
-      </ul> */}
     </div>
   );
 }

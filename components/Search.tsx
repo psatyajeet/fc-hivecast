@@ -80,7 +80,17 @@ export default function Search({
                   </div>
                 );
               })}
-              {results.length <= 0 &&
+              {debouncedSearchTerm && results.length <= 0 && (
+                <div>
+                  <li className="rounded-md text-center p-[12px]">
+                    No results found. <br />
+                    Send a cast with {`#${debouncedSearchTerm}`} and it will be
+                    indexed in 2 hours.
+                  </li>
+                </div>
+              )}
+              {!debouncedSearchTerm &&
+                results.length <= 0 &&
                 topTags.map((tag) => {
                   if (savedTags.has(tag.tag)) return null;
                   return (
