@@ -35,6 +35,11 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
         <meta name="description" content="Find casts on different topics" />
         {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
         <link rel="icon" href="/favicon.ico" />
+        <script
+          defer
+          data-domain="hashcast.xyz"
+          src="https://plausible.io/js/script.js"
+        ></script>
       </Head>
       <main className="bg-purple-200">
         <div className="flex flex-column justify-center p-[24px] lg:flex-row lg:max-w-6xl lg:mx-auto lg:pt-[48px] lg:pb-[64px]">
