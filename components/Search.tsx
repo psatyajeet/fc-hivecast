@@ -65,17 +65,17 @@ export default function Search({
               />
             </fieldset>
             <ul className="overflow-auto max-h-[300px] mx-[12px] mb-[15px]">
-              {results.map((result) => {
+              {results.map(({ tag }) => {
                 return (
-                  <div key={result.tag}>
+                  <div key={tag}>
                     <li
-                      className="rounded-md hover:bg-purple-400 p-[12px]"
+                      className={`plausible-event-name=tagSelect plausible-event-tag=${tag} rounded-md hover:bg-purple-400 p-[12px]`}
                       onClick={() => {
-                        onClick(result.tag);
+                        onClick(tag);
                         setOpen(false);
                       }}
                     >
-                      # {result.tag}
+                      # {tag}
                     </li>
                   </div>
                 );
