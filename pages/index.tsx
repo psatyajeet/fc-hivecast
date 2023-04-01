@@ -31,7 +31,7 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
   return (
     <>
       <Head>
-        <title>HashCast</title>
+        <title>Hashcast</title>
         <meta name="description" content="Find casts on different topics" />
         {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
         <link rel="icon" href="/favicon.ico" />
