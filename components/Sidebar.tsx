@@ -28,7 +28,7 @@ export default function Sidebar({
           setItem("selectedTag", tag, "local");
         }}
       />
-      <div className="overflow-x-auto overflow-y-auto mt-[24px] mb-[12px] lg:mb-[12px]">
+      <div className="overflow-x-auto overflow-y-auto mt-[24px] mb-[12px] lg:mb-[96px]">
         <ul className="flex flex-row flex-wrap justify-center sm:flex-wrap lg:flex-col">
           {Array.from(savedTags).map((tag) => {
             return (
