@@ -1,10 +1,17 @@
 import { CastType } from "@/components/Content";
 import { formatCastText } from "@/helpers/cast";
+import { getDayjsFromDate } from "@/helpers/dayjs";
 import * as Avatar from "@radix-ui/react-avatar";
 
 const formatDate = (date: string): string => {
   const d = new Date(date);
   return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+};
+
+const howLongAgo = (date: string): string => {
+  const d = new Date(date);
+  const dayjsDate = getDayjsFromDate(d);
+  return dayjsDate.fromNow();
 };
 
 export default function Cast({ cast }: { cast: CastType }) {
@@ -40,8 +47,11 @@ export default function Cast({ cast }: { cast: CastType }) {
               <div className="text-gray-600">@{cast.author_username}</div>
             </div>
           </div>
-          <div className="text-sm text-gray-600 mb-[0.75rem] sm:mb-[0.25rem]">
-            {formatDate(cast.published_at)}
+          <div
+            className="text-sm text-gray-600 mb-[0.75rem] sm:mb-[0.25rem]"
+            title={formatDate(cast.published_at)}
+          >
+            {howLongAgo(cast.published_at)}
           </div>
         </div>
         <div className="">{formatCastText(cast.text)}</div>
