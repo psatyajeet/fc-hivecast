@@ -47,7 +47,12 @@ export default function Sidebar({
         </ul>
       </div>
       <div className="text-sm text-center mb-[12px] lg:px-[16px] lg:fixed lg:bottom-[0px] lg:mb-[24px]">
-        <div>Built with 🟪 by @pal</div>
+        <div>
+          Built with 🟪 by{" "}
+          <a href="https://warpcast.com/pal" target="_blank" rel="noopener">
+            @pal
+          </a>
+        </div>
         <div>Have feedback? </div>
         <div>
           <a

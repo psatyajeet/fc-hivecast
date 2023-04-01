@@ -12,6 +12,7 @@ export default function Cast({ cast }: { cast: CastType }) {
     <div className="block rounded-md mx-auto py-6 px-4 bg-purple-100 ">
       <a
         target="_blank"
+        rel="noopener"
         href={`https://warpcast.com/${cast.author_username}/${cast.hash.slice(
           0,
           8
