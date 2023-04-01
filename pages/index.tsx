@@ -38,7 +38,7 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
         <script
           defer
           data-domain="hashcast.xyz"
-          src="https://plausible.io/js/script.js"
+          src="https://plausible.io/js/script.tagged-events.js"
         ></script>
       </Head>
       <main className="bg-purple-200">
