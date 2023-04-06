@@ -21,6 +21,14 @@ export interface CastType {
   deleted: boolean;
 }
 
+export interface FormattedCast extends CastType {
+  body: {
+    data: {
+      image?: string;
+    };
+  };
+}
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Content({ selectedTag }: { selectedTag: string }) {

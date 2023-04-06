@@ -1,7 +1,10 @@
-import { CastType } from "@/components/Content";
+import { CastType, FormattedCast } from "@/components/Content";
 import { formatCastText } from "@/helpers/cast";
 import { getDayjsFromDate } from "@/helpers/dayjs";
 import * as Avatar from "@radix-ui/react-avatar";
+import Image from "next/image";
+
+const IMGUR_URL = "https://i.imgur.com/";
 
 const formatDate = (date: string): string => {
   const d = new Date(date);
@@ -14,7 +17,29 @@ const howLongAgo = (date: string): string => {
   return dayjsDate.fromNow();
 };
 
-export default function Cast({ cast }: { cast: CastType }) {
+function formatCast(cast: CastType): FormattedCast {
+  let { text, ...rest } = cast;
+  let image = undefined;
+
+  if (text.includes(IMGUR_URL)) {
+    image = IMGUR_URL + text.split(IMGUR_URL)[1];
+    text = text.split(IMGUR_URL)[0];
+  }
+
+  return {
+    ...rest,
+    text,
+    body: {
+      data: {
+        image,
+      },
+    },
+  };
+}
+
+export default function Cast({ cast: rawCast }: { cast: CastType }) {
+  const cast = formatCast(rawCast);
+
   return (
     <div className="block rounded-md mx-auto py-6 px-4 bg-purple-100 ">
       <a
@@ -54,7 +79,21 @@ export default function Cast({ cast }: { cast: CastType }) {
             {howLongAgo(cast.published_at)}
           </div>
         </div>
-        <div className="">{formatCastText(cast.text)}</div>
+        <div className="mb-[8px]">{formatCastText(cast.text)}</div>
+        {cast.body?.data?.image && (
+          <div className="relative  h-96 max-w-[100%] ">
+            <div className="">
+              <Image
+                src={cast.body.data.image}
+                className=""
+                loading="lazy"
+                alt=""
+                fill
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          </div>
+        )}
       </a>
     </div>
   );
