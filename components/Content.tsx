@@ -35,7 +35,7 @@ export default function Content({ selectedTag }: { selectedTag: string }) {
   const { data, error, isLoading } = useSWR(
     `/api/tags/${selectedTag}`,
     fetcher,
-    { refreshInterval: 1000 }
+    { refreshInterval: 1000 * 60 }
   );
 
   if (error)

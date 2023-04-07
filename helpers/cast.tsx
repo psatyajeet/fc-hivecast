@@ -34,7 +34,7 @@ export function formatCastText(text: string) {
       const shortenedUri = uri.slice(0, 20) + "..." + uri.slice(-10);
       text = text.replace(
         uri,
-        `<a href="${uri}" rel="noopener">${shortenedUri}</a>`
+        `<a href="${uri}" target="_blank" rel="noopener">${shortenedUri}</a>`
       );
     });
   }
@@ -54,7 +54,9 @@ export function formatCastText(text: string) {
       ) {
         text = text.replace(
           mention,
-          `<a href="/search?username=${mention.slice(1)}">${mention}</a>`
+          `<a href="//warpcast.com/${mention.slice(
+            1
+          )}" target="_blank" rel="noopener">${mention}</a>`
         );
       }
     });
