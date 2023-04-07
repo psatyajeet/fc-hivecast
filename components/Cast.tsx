@@ -79,19 +79,16 @@ export default function Cast({ cast: rawCast }: { cast: CastType }) {
             {howLongAgo(cast.published_at)}
           </div>
         </div>
-        <div className="mb-[8px]">{formatCastText(cast.text)}</div>
+        <div className="mb-[16px]">{formatCastText(cast.text)}</div>
         {cast.body?.data?.image && (
-          <div className="relative  h-96 max-w-[100%] ">
-            <div className="">
-              <Image
-                src={cast.body.data.image}
-                className=""
-                loading="lazy"
-                alt=""
-                fill
-                style={{ objectFit: "contain" }}
-              />
-            </div>
+          <div className="relative h-96 max-w-[100%] ">
+            <Image
+              fill
+              alt=""
+              src={cast.body.data.image}
+              loading="lazy"
+              style={{ objectFit: "contain" }}
+            />
           </div>
         )}
       </a>
