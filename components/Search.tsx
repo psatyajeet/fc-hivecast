@@ -31,16 +31,64 @@ export default function Search({
       if (debouncedSearchTerm) {
         setIsSearching(true);
         search(debouncedSearchTerm).then((results) => {
-          setIsSearching(false);
           setResults(results);
+          setIsSearching(false);
         });
       } else {
         setResults([]);
-        setIsSearching(false);
+        setIsSearching(true);
       }
     },
     [debouncedSearchTerm] // Only call effect if debounced search term changes
   );
+
+  const getResults = () => {
+    console.log(isSearching, debouncedSearchTerm, results.length);
+    if (isSearching || !debouncedSearchTerm) {
+      return topTags.map((tag) => {
+        if (savedTags.has(tag.tag)) return <></>;
+        return (
+          <li
+            key={tag.tag}
+            className="rounded-md hover:bg-purple-400 p-[12px]"
+            onClick={() => {
+              onClick(tag.tag);
+              setOpen(false);
+            }}
+          >
+            # {tag.tag}
+          </li>
+        );
+      });
+    }
+
+    if (debouncedSearchTerm) {
+      if (results.length <= 0) {
+        return (
+          <li className="rounded-md text-center p-[12px]">
+            No results found. <br />
+            Send a cast with {`#${debouncedSearchTerm}`} and it will be indexed
+            in 2 hours.
+          </li>
+        );
+      } else {
+        return results.map(({ tag }) => {
+          return (
+            <li
+              key={tag}
+              className={`plausible-event-name=tagSelect plausible-event-tag=${tag} rounded-md hover:bg-purple-400 p-[12px]`}
+              onClick={() => {
+                onClick(tag);
+                setOpen(false);
+              }}
+            >
+              # {tag}
+            </li>
+          );
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -64,49 +112,8 @@ export default function Search({
                 }}
               />
             </fieldset>
-            <ul className="overflow-auto max-h-[300px] mx-[12px] mb-[15px]">
-              {results.map(({ tag }) => {
-                return (
-                  <div key={tag}>
-                    <li
-                      className={`plausible-event-name=tagSelect plausible-event-tag=${tag} rounded-md hover:bg-purple-400 p-[12px]`}
-                      onClick={() => {
-                        onClick(tag);
-                        setOpen(false);
-                      }}
-                    >
-                      # {tag}
-                    </li>
-                  </div>
-                );
-              })}
-              {debouncedSearchTerm && results.length <= 0 && (
-                <div>
-                  <li className="rounded-md text-center p-[12px]">
-                    No results found. <br />
-                    Send a cast with {`#${debouncedSearchTerm}`} and it will be
-                    indexed in 2 hours.
-                  </li>
-                </div>
-              )}
-              {!debouncedSearchTerm &&
-                results.length <= 0 &&
-                topTags.map((tag) => {
-                  if (savedTags.has(tag.tag)) return null;
-                  return (
-                    <div key={tag.tag}>
-                      <li
-                        className="rounded-md hover:bg-purple-400 p-[12px]"
-                        onClick={() => {
-                          onClick(tag.tag);
-                          setOpen(false);
-                        }}
-                      >
-                        # {tag.tag}
-                      </li>
-                    </div>
-                  );
-                })}
+            <ul className="overflow-auto h-[300px] mx-[12px] mb-[15px]">
+              {getResults()}
             </ul>
           </Dialog.Content>
         </Dialog.Portal>
