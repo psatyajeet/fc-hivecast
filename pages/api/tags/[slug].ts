@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import supabase from "@/lib/db";
 import { getMostCommonVersionOfTag } from "@/pages/api/tags";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Client } from "pg";
 
 type Cast = {
   hash: string;
@@ -21,6 +21,8 @@ type Data = {
 type Error = {
   error: string;
 };
+
+const POSTGRES_CONNECTION_STRING = process.env.POSTGRES_CONNECTION_STRING || "";
 
 function formatCastsFromSupabase(casts: any[]): Cast[] {
   const castHashes: Set<string> = new Set();
@@ -53,24 +55,28 @@ function formatCastsFromSupabase(casts: any[]): Cast[] {
 }
 
 async function getPostsByTag(tag: string): Promise<Data> {
-  const tags = await supabase
-    .from("cast_tags")
-    .select(`tag, casts (*)`)
-    .ilike("tag", tag)
-    .order("published_at", { ascending: false })
-    .limit(100);
+  const pgClient = new Client({
+    connectionString: POSTGRES_CONNECTION_STRING,
+  });
 
-  if (tags.error) {
-    throw tags.error;
-  }
+  await pgClient.connect();
+  const tags: {
+    rows: Record<string, any>[];
+  } = await pgClient.query(
+    `SELECT tag, casts.* FROM cast_tags \
+      INNER JOIN casts on casts.hash = cast_tags.cast_hash \
+      WHERE to_tsvector('english', tag) @@ to_tsquery('english', '${tag}') \
+      ORDER BY cast_tags.published_at DESC \
+      LIMIT 500;`
+  );
+  await pgClient.end();
 
-  const { data } = tags;
+  const { rows: data } = tags;
 
   const mostCommonVersion = getMostCommonVersionOfTag(
-    data.map((tag) => tag.tag)
+    data.map(({ tag, ...rest }) => tag)
   );
-
-  const casts = formatCastsFromSupabase(data.map((tag) => tag.casts));
+  const casts = formatCastsFromSupabase(data.map(({ tag, ...rest }) => rest));
 
   return { tag: mostCommonVersion, casts };
 }

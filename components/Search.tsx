@@ -45,7 +45,7 @@ export default function Search({
   const getResults = () => {
     if (isSearching || !debouncedSearchTerm) {
       return topTags.map((tag) => {
-        if (savedTags.has(tag.tag)) return <></>;
+        if (savedTags.has(tag.tag)) return null;
         return (
           <li
             key={tag.tag}
@@ -64,7 +64,7 @@ export default function Search({
     if (debouncedSearchTerm) {
       if (results.length <= 0) {
         return (
-          <li className="rounded-md text-center p-[12px]">
+          <li key="no-results" className="rounded-md text-center p-[12px]">
             No results found. <br />
             Send a cast with {`#${debouncedSearchTerm}`} and it will be indexed
             within 2 hours.
