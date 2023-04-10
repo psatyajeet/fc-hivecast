@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { query } from "@/lib/postgres";
 import { getMostCommonVersionOfTag } from "@/pages/api/tags";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Client } from "pg";
 
 type Cast = {
   hash: string;
@@ -21,8 +21,6 @@ type Data = {
 type Error = {
   error: string;
 };
-
-const POSTGRES_CONNECTION_STRING = process.env.POSTGRES_CONNECTION_STRING || "";
 
 function formatCastsFromSupabase(casts: any[]): Cast[] {
   const castHashes: Set<string> = new Set();
@@ -55,21 +53,15 @@ function formatCastsFromSupabase(casts: any[]): Cast[] {
 }
 
 async function getPostsByTag(tag: string): Promise<Data> {
-  const pgClient = new Client({
-    connectionString: POSTGRES_CONNECTION_STRING,
-  });
-
-  await pgClient.connect();
   const tags: {
     rows: Record<string, any>[];
-  } = await pgClient.query(
+  } = await query(
     `SELECT tag, casts.* FROM cast_tags \
       INNER JOIN casts on casts.hash = cast_tags.cast_hash \
       WHERE to_tsvector('english', tag) @@ to_tsquery('english', '${tag}') \
       ORDER BY cast_tags.published_at DESC \
       LIMIT 500;`
   );
-  await pgClient.end();
 
   const { rows: data } = tags;
 
