@@ -55,6 +55,8 @@ function formatCastsFromSupabase(casts: any[]): Cast[] {
 }
 
 async function getPostsByTag(tag: string): Promise<Data> {
+  const t0 = performance.now();
+
   const pgClient = new Client({
     connectionString: POSTGRES_CONNECTION_STRING,
   });
@@ -70,6 +72,9 @@ async function getPostsByTag(tag: string): Promise<Data> {
       LIMIT 500;`
   );
   await pgClient.end();
+
+  const t1 = performance.now();
+  console.log(`${tag} search took ` + (t1 - t0) + " milliseconds.");
 
   const { rows: data } = tags;
 

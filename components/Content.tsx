@@ -1,5 +1,7 @@
 import Cast from "@/components/Cast";
+import CreateCast from "@/components/CreateCast";
 import useSWR from "swr";
+import { useAccount } from "wagmi";
 
 export interface CastType {
   hash: string;
@@ -31,7 +33,18 @@ export interface FormattedCast extends CastType {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
+const getConnectedWallet = (
+  address: string | undefined,
+  isConnecting: boolean,
+  isDisconnected: boolean
+) => {
+  if (isConnecting) return <div>Connecting...</div>;
+  if (isDisconnected) return <div>Disconnected</div>;
+  return <div>Connected Wallet: {address}</div>;
+};
+
 export default function Content({ selectedTag }: { selectedTag: string }) {
+  const { address, isConnecting, isDisconnected } = useAccount();
   const { data, error, isLoading } = useSWR(
     `/api/tags/${selectedTag}`,
     fetcher,
@@ -53,6 +66,12 @@ export default function Content({ selectedTag }: { selectedTag: string }) {
 
   const casts: CastType[] = data.casts;
 
+  const connectedWalletComponent = getConnectedWallet(
+    address,
+    isConnecting,
+    isDisconnected
+  );
+
   if (!selectedTag || casts.length <= 0) {
     return (
       <div className="w-[100%] mx-auto lg:w-[650px] lg:ml-[224px]">
@@ -63,9 +82,11 @@ export default function Content({ selectedTag }: { selectedTag: string }) {
 
   return (
     <div className="w-[100%] mx-auto lg:w-[650px] lg:ml-[224px] lg:overflow-y-auto">
+      {connectedWalletComponent}
       <div className="flex flex-row justify-between items-center">
         <div className="text-xl font-bold"># {selectedTag}</div>
       </div>
+      <CreateCast />
       <div className="min-w-[300px] mt-[12px] space-y-4 sm:min-w-[100%]">
         {casts.map((cast) => (
           <Cast key={cast.hash} cast={cast} />

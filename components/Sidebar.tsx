@@ -1,6 +1,7 @@
 import Search from "@/components/Search";
 import { useStorage } from "@/hooks/useLocalStorage";
 import { TagCount } from "@/pages/api/tags";
+import { ConnectKitButton } from "connectkit";
 
 export default function Sidebar({
   topTags,
@@ -17,6 +18,7 @@ export default function Sidebar({
 
   return (
     <div className="flex flex-col lg:fixed lg:h-screen lg:w-[200px] lg:pb-[48px]">
+      <ConnectKitButton />
       <Search
         topTags={topTags}
         savedTags={savedTags}
