@@ -5,10 +5,15 @@ import { getTags, TagCount } from "@/pages/api/tags";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-function Home({ topTags }: { topTags: Array<TagCount> }) {
+function Home({
+  topTags,
+  recentTags,
+}: {
+  topTags: TagCount[];
+  recentTags: TagCount[];
+}) {
   const { getItem } = useStorage();
 
-  // const [topTags, setTopTags] = useState<TagCount[]>([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [savedTags, setSavedTags] = useState<Set<string>>(new Set());
 
@@ -16,8 +21,6 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
     const selectedTag = getItem("selectedTag", "local");
     if (selectedTag) {
       setSelectedTag(selectedTag);
-    } else {
-      setSelectedTag("Ethereum");
     }
 
     const savedTags = getItem("savedTags", "local");
@@ -69,7 +72,13 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
               setSelectedTag={setSelectedTag}
               setSavedTags={setSavedTags}
             />
-            <Content selectedTag={selectedTag} />
+            <Content
+              selectedTag={selectedTag}
+              recentTags={recentTags}
+              savedTags={savedTags}
+              setSelectedTag={setSelectedTag}
+              setSavedTags={setSavedTags}
+            />
           </div>
         </div>
       </main>
@@ -81,16 +90,19 @@ function Home({ topTags }: { topTags: Array<TagCount> }) {
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps() {
-  const tags = await getTags();
+  const topTags = await getTags();
+  const NUM_LOOKBACK_DAYS = 3;
+  const recentTags = await getTags(NUM_LOOKBACK_DAYS);
 
   return {
     props: {
-      topTags: tags,
+      topTags,
+      recentTags,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 60 seconds
-    revalidate: 60, // In seconds
+    revalidate: 60 * 5, // In seconds
   };
 }
 

@@ -33,12 +33,12 @@ export default function Sidebar({
           {Array.from(savedTags).map((tag) => {
             return (
               <li
+                key={tag}
                 className={`plausible-event-name=tagSelect plausible-event-tag=${tag} rounded-md text-lg text-center cursor-pointer py-1 px-4 m-[1px] hover:bg-purple-400 lg:text-left`}
                 onClick={() => {
                   setItem("selectedTag", tag, "local");
                   setSelectedTag(tag);
                 }}
-                key={tag}
               >
                 # {tag}
               </li>
