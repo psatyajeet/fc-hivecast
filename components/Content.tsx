@@ -12,11 +12,10 @@ export default function Content({
   selectedTag: string;
   recentTags: TagCount[];
   savedTags: Set<string>;
-
   setSelectedTag: any;
   setSavedTags: any;
 }) {
-  if (selectedTag) {
+  if (!!selectedTag) {
     return <CastList selectedTag={selectedTag} />;
   }
 
