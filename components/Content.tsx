@@ -1,6 +1,7 @@
 import CastList from "@/components/CastList";
 import RecentTags from "@/components/RecentTags";
 import { TagCount } from "@/pages/api/tags";
+import { useEffect } from "react";
 
 export default function Content({
   selectedTag,
@@ -15,6 +16,11 @@ export default function Content({
   setSelectedTag: any;
   setSavedTags: any;
 }) {
+  useEffect(() => {
+    // Scroll to the top of the page when the selected tag changes
+    window.scrollTo(0, 0);
+  }, [selectedTag]);
+
   if (!!selectedTag) {
     return <CastList selectedTag={selectedTag} />;
   }
