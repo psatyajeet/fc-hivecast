@@ -1,4 +1,4 @@
-import { CastType, FormattedCast } from "@/components/Content";
+import { CastType, FormattedCast } from "@/components/CastList";
 import { formatCastText } from "@/helpers/cast";
 import { getDayjsFromDate } from "@/helpers/dayjs";
 import * as Avatar from "@radix-ui/react-avatar";

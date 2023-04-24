@@ -28,17 +28,26 @@ export default function Sidebar({
           setItem("selectedTag", tag, "local");
         }}
       />
+      <div
+        className="text-lg mt-[24px] px-4 cursor-pointer"
+        onClick={() => {
+          setItem("selectedTag", "", "local");
+          setSelectedTag("");
+        }}
+      >
+        See popular tags {"->"}
+      </div>
       <div className="overflow-x-auto overflow-y-auto mt-[24px] mb-[12px] lg:mb-[96px]">
         <ul className="flex flex-row flex-wrap justify-center sm:flex-wrap lg:flex-col">
           {Array.from(savedTags).map((tag) => {
             return (
               <li
+                key={tag}
                 className={`plausible-event-name=tagSelect plausible-event-tag=${tag} rounded-md text-lg text-center cursor-pointer py-1 px-4 m-[1px] hover:bg-purple-400 lg:text-left`}
                 onClick={() => {
                   setItem("selectedTag", tag, "local");
                   setSelectedTag(tag);
                 }}
-                key={tag}
               >
                 # {tag}
               </li>

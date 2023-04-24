@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import supabase from "@/lib/db";
+import { query } from "@/lib/postgres";
 import _ from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -25,8 +26,22 @@ export function getMostCommonVersionOfTag(tagVersions: DbTagCount[]): string {
   return mostCommonVersion.tag;
 }
 
-function getTopTags(tags: Record<string, DbTagCount[]>): TagCount[] {
-  const topTags = Object.entries(tags);
+function getTopTags(tags: DbTagCount[]): TagCount[] {
+  // Convert DbTagCount into TagCount and dedupe different capitalizations of the same tag
+  const tagToEntries: Record<string, Array<DbTagCount>> = tags.reduce(
+    (accumulator, tag) => {
+      const lowercaseTag = tag.tag.toLowerCase();
+      if (accumulator[lowercaseTag]) {
+        accumulator[lowercaseTag].push(tag);
+      } else {
+        accumulator[lowercaseTag] = [tag];
+      }
+      return accumulator;
+    },
+    {} as Record<string, DbTagCount[]>
+  );
+
+  const topTags = Object.entries(tagToEntries);
 
   const formattedTags = topTags
     .map((tag) => {
@@ -37,6 +52,8 @@ function getTopTags(tags: Record<string, DbTagCount[]>): TagCount[] {
       return { tag: mostCommonVersion, count };
     })
     .filter((tag) => tag.count > 1); // filter out tags with less than one cast
+
+  formattedTags.sort((a, b) => b.count - a.count);
 
   return formattedTags;
 }
@@ -72,24 +89,38 @@ async function getUniqueCastTags(): Promise<DbTagCount[]> {
   return tags;
 }
 
-export async function getTags(): Promise<TagCount[]> {
-  const tags = await getUniqueCastTags();
-
-  // Convert DbTagCount into TagCount and dedupe different capitalizations of the same tag
-  const tagToEntries: Record<string, Array<DbTagCount>> = tags.reduce(
-    (accumulator, tag) => {
-      const lowercaseTag = tag.tag.toLowerCase();
-      if (accumulator[lowercaseTag]) {
-        accumulator[lowercaseTag].push(tag);
-      } else {
-        accumulator[lowercaseTag] = [tag];
-      }
-      return accumulator;
-    },
-    {} as Record<string, DbTagCount[]>
+async function getLatestUniqueCastTags(
+  lookbackDays: number
+): Promise<DbTagCount[]> {
+  const data: { rows: Array<{ tag: string; tag_count: string }> } = await query(
+    `SELECT 
+      tag, \
+      COUNT(*) as tag_count \
+    FROM cast_tags \
+    WHERE cast_tags.published_at >= NOW() - INTERVAL '${lookbackDays} DAY' \
+    GROUP BY tag \
+    ORDER BY tag_count \
+    DESC `
   );
 
-  const topTags = getTopTags(tagToEntries);
+  if (!data) {
+    throw new Error(`Failed to get latest ${lookbackDays} unique cast tags`);
+  }
+
+  const { rows } = data;
+  const formattedRows = rows.map((row) => {
+    return { tag: row.tag, tag_count: parseInt(row.tag_count) };
+  });
+
+  return formattedRows;
+}
+
+export async function getTags(lookbackDays?: number): Promise<TagCount[]> {
+  const tags = lookbackDays
+    ? await getLatestUniqueCastTags(lookbackDays)
+    : await getUniqueCastTags();
+
+  const topTags = getTopTags(tags);
   return topTags;
 }
 
