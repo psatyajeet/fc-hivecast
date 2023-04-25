@@ -90,21 +90,21 @@ async function getUniqueCastTags(): Promise<DbTagCount[]> {
 }
 
 async function getLatestUniqueCastTags(
-  lookbackDays: number
+  lookbackHours: number
 ): Promise<DbTagCount[]> {
   const data: { rows: Array<{ tag: string; tag_count: string }> } = await query(
     `SELECT 
       tag, \
       COUNT(*) as tag_count \
     FROM cast_tags \
-    WHERE cast_tags.published_at >= NOW() - INTERVAL '${lookbackDays} DAY' \
+    WHERE cast_tags.published_at >= NOW() - INTERVAL '${lookbackHours} HOUR' \
     GROUP BY tag \
     ORDER BY tag_count \
     DESC `
   );
 
   if (!data) {
-    throw new Error(`Failed to get latest ${lookbackDays} unique cast tags`);
+    throw new Error(`Failed to get latest ${lookbackHours} unique cast tags`);
   }
 
   const { rows } = data;
@@ -115,9 +115,9 @@ async function getLatestUniqueCastTags(
   return formattedRows;
 }
 
-export async function getTags(lookbackDays?: number): Promise<TagCount[]> {
-  const tags = lookbackDays
-    ? await getLatestUniqueCastTags(lookbackDays)
+export async function getTags(lookbackHours?: number): Promise<TagCount[]> {
+  const tags = lookbackHours
+    ? await getLatestUniqueCastTags(lookbackHours)
     : await getUniqueCastTags();
 
   const topTags = getTopTags(tags);

@@ -59,8 +59,8 @@ function Home({
 // revalidation is enabled and a new request comes in
 export async function getStaticProps() {
   const topTags = await getTags();
-  const NUM_LOOKBACK_DAYS = 3;
-  const recentTags = await getTags(NUM_LOOKBACK_DAYS);
+  const NUM_LOOKBACK_HOURS = 12;
+  const recentTags = await getTags(NUM_LOOKBACK_HOURS);
 
   return {
     props: {
